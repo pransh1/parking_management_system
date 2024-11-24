@@ -4,6 +4,8 @@ import dbConnection from "./config/dbConnections.js";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import parkingSpaceRoutes from "./routes/parkingSpaceRoutes.js";
+import walletRoutes from "./routes/walletRoutes.js";
+
 const app = express();
 dotenv.config({ path: "./.env" });
 
@@ -18,6 +20,7 @@ app.use("/api/register", userRoutes);
 app.use("/api/login", userRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/parking-spaces", parkingSpaceRoutes);
+app.use("/api/wallet", walletRoutes);
 app.listen(port, () => {
   console.log(`server running on PORT ${port}`);
 });
