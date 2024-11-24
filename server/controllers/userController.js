@@ -1,17 +1,16 @@
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
+import { User } from "../models/userModel.js";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 
 const generateJwtToken = (userData) => {
   return jwt.sign(userData, process.env.PRIVATE_KEY, { expiresIn: "7d" });
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, phoneNumber, password } = req.body;
-  if (!username || !email || !phoneNumber || !password) {
+  const { username, email, phoneNumber, password, role } = req.body;
+  if (!username || !email || !phoneNumber || !password || !role) {
     res.status(400);
     throw new Error("Please fill all the fields");
   }
@@ -21,20 +20,15 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // hash the password
-  const salt = await User.bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const user = User.create({
+  const user = await User.create({
     username: username.toLowerCase(),
     email,
     phoneNumber,
     password: hashedPassword,
-  });
-
-  const token = generateJwtToken({
-    username: user.username,
-    email: user.email,
-    phoneNumer: user.phoneNumber,
+    role,
   });
 
   const createdUser = await User.findById(user._id);
@@ -44,6 +38,13 @@ const registerUser = asyncHandler(async (req, res) => {
       .json({ message: "Something went wring during registering the user" });
   }
 
+  const token = generateJwtToken({
+    username: createdUser.username,
+    email: createdUser.email,
+    phoneNumber: createdUser.phoneNumber,
+    role: createdUser.role,
+  });
+
   return res.status(201).json({
     user: createdUser,
     message: "User register successfully",
@@ -52,7 +53,29 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body();
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Fill all the fields");
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    return res.status(400).json({ message: "password did not match" });
+  }
+
+  const token = generateJwtToken({
+    username: user.username,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+  });
+
+  return res.status(200).json({ message: "Login successfully", token: token });
 });
 
-export { registerUser };
+export { registerUser, loginUser };
