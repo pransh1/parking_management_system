@@ -1,4 +1,4 @@
-import { ParkingSpace } from "../models/parkingSpaceModel";
+import { ParkingSpace } from "../models/parkingSpaceModel.js";
 import asyncHandler from "express-async-handler";
 
 const createParkingSpace = asyncHandler(async (req, res) => {

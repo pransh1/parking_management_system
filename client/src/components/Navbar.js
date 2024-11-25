@@ -22,17 +22,12 @@ const Navbar = () => {
             <li>
               <Link to="/"> Home </Link>
             </li>
+            <Link to="/parking-spaces">Parking Slots</Link>
             <li>
-              <a href="#"> Services </a>
+              <Link to="/wallet">Wallet</Link>
             </li>
             <li>
-              <a href="#"> About </a>
-            </li>
-            <li>
-              <a href="#"> Contact </a>
-            </li>
-            <li>
-              <a href="#"> Home </a>
+              <Link to="/my-account">My Account</Link>
             </li>
           </ul>
         </div>
@@ -47,16 +42,16 @@ const Navbar = () => {
         <div class="mobile-nav-items">
           <ul>
             <li>
-              <a href="#"> Home </a>
+            <Link to="/"> Home </Link>
             </li>
             <li>
-              <a href="#"> Services </a>
+            <Link to="/parking-spaces">Parking Slots</Link>
             </li>
             <li>
-              <a href="#"> About </a>
+            <Link to="/wallet">Wallet</Link>
             </li>
             <li>
-              <a href="#"> Contact </a>
+            <Link to="/my-account">My Account</Link>
             </li>
           </ul>
         </div>
