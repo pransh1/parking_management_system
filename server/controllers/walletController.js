@@ -1,4 +1,4 @@
-import { Wallet } from "../models/walletModel";
+import { Wallet } from "../models/walletModel.js";
 import asyncHandler from "express-async-handler";
 
 

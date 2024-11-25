@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CheckBalance, addMoney, deductParkingFee } from "../controllers/walletController";
+import { CheckBalance, addMoney, deductParkingFee } from "../controllers/walletController.js";
 
 const router = Router();
 
